@@ -1,0 +1,58 @@
+<div class="pull-right slider_right ms-controller "   id="txl"  :css="[ @toggle && @objWidthtwo]" :controller="swrytxl" >
+    <div class="right_header" >
+        <span class="pull-left">税务人员通讯录</span>
+    </div>
+    <!--<div   style="background:#F9FAFC;position: absolute;top:40px;bottom: 0;width: 15%" >-->
+        <!--<ul class="parentList">-->
+
+            <!--<li class="margin_10 nav-header menu-first collapsed center-block" data-toggle="collapse">-->
+                <!--<p style="text-align:left;cursor:pointer;padding-left:15px;" id='all' class="backblue color_f" :click="@listxiang('',1,true)">全部分类</p>-->
+            <!--</li>-->
+            <!--<ul :for="el in @listone" class="listGrout">-->
+                <!--<li  :hover="@disCss" ms-attr="{href:'#'+ el.group_name}" class="parent nav-header menu-first collapsed" data-toggle="collapse" >-->
+                    <!--<p style="text-align:left;cursor:pointer;padding-left:15px;" :attr="{id:el.group_id,title:el.group_name}" :click="@listxiang(el.group_id,1,true)">&lt;!&ndash;<i class="pull-left iconfont icon-jiantouxiangyou"></i>&ndash;&gt; {{el.group_name | truncate(10,'...')}} ({{el.count}})</p>-->
+                    <!--&lt;!&ndash;<div :hover="@disCss">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<i  class="pull-right color_f cursor iconfont icon-fengexianICONCopy"></i>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<ul>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li data-toggle="modal" data-target="#changeName":click="@groupName(el.group_id)">修改名称</li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li data-toggle="modal"   :click="@deletefl(el.group_id,el.group_name)">删除</li>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul></div>&ndash;&gt;-->
+                <!--</li>-->
+                <!--&lt;!&ndash;<ul ms-attr="{id: el.group_name}" class=" nav nav-list collapse menu-second">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li class="children" :hover="@disCss"  :for="children in el.list" :click="@listxiang(children.group_id,children.corp_id)">{{children.group_name}} <i class="color_f iconfont icon-fengexianICONCopy"></i>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div ><ul>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li data-toggle="modal" data-target="#changezfl">添加子分类</li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li data-toggle="modal" data-target="#changeName">修改名称</li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li data-toggle="modal" data-target="#deletefl">删除</li>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+            <!--</ul>-->
+        <!--</ul>-->
+    <!--</div>-->
+    <div style="width: 100%;position: absolute;top: 40px;right: 0;bottom: 0">
+        <table class="table table-responsive">
+            <thead  class=" table-bordered table-responsive table-striped text-center" style="background-color:#F6F7FB;">
+                <tr>
+                    <td class=" table-bordered">姓名</td>
+                    <td class=" table-bordered">微信号</td>
+                    <td class=" table-bordered">电话</td>
+                    <td class=" table-bordered">状态</td>
+                    <!--<td class=" table-bordered">职务</td>-->
+                    <!--<td class=" table-bordered">联系电话</td>-->
+                    <!--<td class=" table-bordered">邮箱地址</td>-->
+                    <!--<td class=" table-bordered">是否一般纳税人</td>-->
+                </tr>
+            </thead>
+            <tbody class="table table-bordered table-responsive">
+                <tr :for="el in @listSwry">
+                    <td>{{el.name}}</td>
+                    <td>{{el.weixin_id}}</td>
+                    <td>{{el.telephone}}</td>
+                    <td :if="el.status == 1 ">未加入微信</td>
+                    <td :if="el.status == 2 " style="font-weight: bold">已加入微信</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+   </div>

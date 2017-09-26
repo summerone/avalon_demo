@@ -1,0 +1,207 @@
+<div class=" pull-right slider_right ms-controller " :controller="chat" :css="[ @toggle && @objWidthtwo]" id="webchat" :click="@bodyclose">
+    <div  class="chatContent" id="" type="page" times="4"  contype="string" >
+        <div class="lay_content">
+            <span class="active_header"  id="mainStutas" :click="@spanchange('mainStutas')">{{@loginname}}<i class="iconfont " :class="[@stutasClass? 'icon-lixian':'icon-zaixian']"></i></span>
+            <div class='stutasWebchat' :class="[@webchatStutas && 'hidden']">
+                <ul>
+                    <li :click="statusFunction(1)"><i style="color: #08BB06;" class="iconfont icon-zaixian "></i>在线</li>
+                    <li :click="statusFunction(0)"><i style="color: red"class="iconfont icon-lixian"></i>离开</li>
+                    <li><i class="iconfont icon-shezhi"></i>系统设置</li>
+                </ul>
+            </div>
+            <span  id="mainchat" :click="@spanchange('mainchat')">({{@listparsen.length}})人待回复</span>
+            <span id="mainlist" :click="@spanchange('mainlist')">({{@listActive.length}})人待接入</span>
+        </div>
+        <div :class="[@mainchat && 'hidden']" class="conten_layim ">
+            <div class="chattitle hidden">​</div>
+            <div id="layui-layim-chat-content" class="layui-layim-chat-content">
+                <ul class=" chat-list"  >
+                    <li  :for='el in @listparsen'  :attr="{class:el.chat_id}"style="margin-right: 0" :hover="'blockI'">
+                        <img src="../../static/images/logo.jpg" :click="@checklist(el.chat_id,el.contacts_id,el.status)">
+                        <span  :click="@checklist(el.chat_id,el.contacts_id,el.status)">{{el.contacts_id}}</span>
+                        <i class="iconfont icon-xx"  :attr="{value:el.contacts_id}" :click="@deleteList(el.contacts_id)"></i>
+                    </li>
+                    <!--<li :hover="'blockI'">-->
+                        <!--<img src="../../static/images/logo.jpg">-->
+                        <!--<span >789555</span>-->
+                        <!--<i class="iconfont icon-xx" ></i>-->
+                    <!--</li>-->
+                </ul>
+                <div class=" chat-box">
+                    <div class=" chat-box-messge">
+                        <div class="chattitle">
+                            <div class=" chattitle-other">
+                                <img  src="../../static/images/logo.jpg">
+                                <span >{{@contacts_id}} </span>
+                                <!--<p class="layim-chat-status" :if="@contacts_id" style="font-size: 14px;margin-left: -30px;display: inline-block"><i style="color:#FF5722;" :if="@status == 1">在线</i></p>-->
+                            </div></div>
+                        <div class=" chat-main" id="scrolldIV" >
+                            <ul>
+                                <li :for="el in @listcontent" :class=" (el.side == '1') && 'chat-mine-right'">
+                                    <div class="chat-user">
+                                        <img src="../../static/images/logo.jpg"><cite><span :visible ="el.side == '2'">{{@contacts_id}}</span>
+                                        <i>{{el.send_time | date("yyyy-MM-dd HH:mm:ss")}}</i><span :visible ="el.side == '1'">{{@admin_}}</span></cite>
+                                    </div>
+                                    <div class="chat-text">
+                                        <div >
+                                            {{el.msg}}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li style="padding: 0;margin: 0;height:0"> <input type="text" id="foucs" style="border: 0;height:0px"/></li>
+                                <li >
+                                    <div class="chat-text" :visible="!@contacts_id">
+                                        <div >
+                                            未选择聊天
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                      </div>
+                        <div class=" chat-footer">
+                            <div class="chat-tool" >
+                                <!--<span class="layui-icon layim-tool-face" title="选择表情" ></span>-->
+                                <!--<span class="layui-icon layim-tool-image" title="上传图片" layim-event="image">-->
+                                <!--<input type="file" name="file">-->
+                                <!--</span>-->
+                                <!--<span class="layui-icon layim-tool-image" title="发送文件" layim-event="image" data-type="file"><input type="file" name="file"></span>-->
+                                <!--<span class="layui-icon layim-tool-audio" title="发送网络音频" layim-event="media" data-type="audio"></span>-->
+                                <!--<span class="layui-icon layim-tool-video" title="发送网络视频" layim-event="media" data-type="video"></span>-->
+                                <!--<span class="layui-icon layim-tool-code" title="代码" layim-event="extend" lay-filter="code"></span>-->
+                                <span class="tool-lognew tool-logchat" ms-click-1="@chatListchange" ms-click-2="@common = !@common "><i class="color_blue padding_right8 iconfont icon-wentiicon54771"></i>常用问题</span>
+                                <span class="tool-log tool-logchat" data-target="#changetime" data-toggle="modal"><i class="color_blue padding_right8 iconfont icon-shijian"></i>聊天记录</span>
+                            </div>
+                            <div class="chatListchange" :class="[@common && 'hidden']">
+                                <ul >
+                                    <li :for="el in @commonProblems" :click="@commonMsg(el.msg)">{{el.msg}} </li>
+                                </ul>
+                            </div>
+                            <div class="chat-textarea" >
+                                <textarea id="text_list"></textarea>
+                            </div>
+                            <div class="chat-bottom">
+                                <div class="chat-send">
+                                <!--<span class="layim-send-close">关闭</span>-->
+                                    <span class="send-btn" :click="@sendmessage">发送</span>
+                                    <span class="send-set">
+                                        <i class="iconfont icon-xiala1"></i>
+                                    </span>
+                                    <!--<ul class="layui-anim layim-menu-box">-->
+                                        <!--<li class="layim-this" layim-event="setSend" lay-type="Enter"><i class="layui-icon"></i>按Enter键发送消息</li>-->
+                                        <!--<li layim-event="setSend" lay-type="Ctrl+Enter"><i class="layui-icon"></i>按Ctrl+Enter键发送消息</li>-->
+                                    <!--</ul>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div :class="[@mainlist && 'hidden']" class="content_parsen">
+            <div class="content_parsen_heder">
+                <span class="border_right active_chat">待接入</span>
+                <!--<span>已过期</span>-->
+                <button id="open_content" class=" pull-right" :click="@linebuttonmessage">接入</button>
+            </div>
+            <div class="this_button">
+                <div :visible="@listActive.length == 0" class="text-center">暂无接入用户</div>
+                <button :for="el in @listActive" class="btn btn-info" :attr="{id:el.contacts_id}" :click="@linebutton(el)"><i  class="hidden iconfont icon-gouxuan blue"></i>{{el.userId}}</button>
+                <!--<button  class="btn btn-info" ><i id="45" class="hidden  iconfont icon-gouxuan blue"></i>summer</button>-->
+                <!--<button  class="btn btn-info" ><i id="56" class="hidden  iconfont icon-gouxuan blue"></i>summer</button>-->
+            </div>
+        </div>
+    </div>
+    <!-- 聊天记录筛选 -->
+    <div class="modal fade" id="changetime" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content" style="width: 66%;height: 285px;">
+                <div class="modal-header" style="background-color: #eee;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" style="font-weight: bold;">聊天记录筛选</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span style="font-weight: 600;">请选择需要查询聊天记录的时间段</span>
+                        <div style="margin-top: 20px;">
+                            <input :duplex="@timeList.startTime" class="laydate-icon" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" placeholder="请选择发送时间" style="width: 45%;padding: 16px;margin-right: 5px">到
+                            <input :duplex="@timeList.endTime" class="laydate-icon" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" placeholder="请选择发送时间" style="width: 45%;padding: 16px;margin-left: 5px">
+                        </div>
+                    </div>
+                    <div  style="margin-top: 40px;margin-left: 120px">
+                        <button type="button" class="btn btn-default" style="width: 66px;" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-info" style="margin-left: 10px;width: 66px;"  ms-click-1 = '@ChatLog(@timeList.startTime,@timeList.endTime)'  data-dismiss="modal">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 批量删除聊天记录 -->
+    <div class="modal fade" id="BatchDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content" style="width: 66%;height: 285px;">
+                <div class="modal-header" style="background-color: #eee;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" style="font-weight: bold;">批量删除聊天记录</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span style="font-weight: 600;">请选择需要删除聊天记录的时间段</span>
+                        <div style="margin-top: 20px;">
+                            <input :duplex="@deleteTime.startTime" class="laydate-icon" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" placeholder="请选择发送时间" style="width: 45%;padding: 16px;margin-right: 5px">到
+                            <input :duplex="@deleteTime.endTime" class="laydate-icon" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" placeholder="请选择发送时间" style="width: 45%;padding: 16px;margin-left: 5px">
+                        </div>
+                    </div>
+                    <div  style="margin-top: 40px;margin-left: 120px">
+                        <button type="button" class="btn btn-default" style="width: 66px;" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-info" style="margin-left: 10px;width: 66px;"  :click="@BatchDelete" data-dismiss="modal">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--聊天记录-->
+    <div class="chat_list" :class="[@chatListjl && 'hidden']">
+        <div class="messageList"><span class="pull-left" style="line-height: 33px;">消息记录</span>
+            <button class="btn btn-info margin_left15" data-target="#BatchDelete" data-toggle="modal">批量删除</button>
+            <i class="iconfont icon-xx pull-right cursor" :click="@chatListjl = true" style="line-height: 33px;"></i></div>
+        <div class=" chat-main" style="height: auto;padding: 0">
+            <ul style="height: auto;margin: 0;padding: 0;" :for = 'el in @ChatLogHistoricalParent'>
+                <li :hover="'backredback'"   class="cursor  backli" >
+                    <!--<input type="checkbox" style="margin-right: 8px"/>-->
+                    <span ms-click-1="@checklistchat(el.chat_id)" ms-attr="{href:'#'+ el.chat_id}" class="cursor nav-header menu-first collapsed " style="line-height: 0" data-toggle="collapse">用户：{{el.contacts_id}} </span>
+                    <i class="iconfont icon-xx pull-right margin_left15" :click="@deleteHistory(el.chat_id)"></i>
+                    <span class="pull-right ">{{el.last_time | date("yyyy-MM-dd")}}</span>
+                </li>
+                <ul style="height:300px;overflow:auto;padding: 8px;margin: 0;width: 100%" ms-attr="{id: el.chat_id}" class="nav nav-list collapse menu-second">
+                    <li style="margin-bottom: 0" :class=" (el.side == '1') && 'chat-mine-right'"  :for="el in @ChatLogHistorical">
+                        <div class="chat-user">
+                            <img src="../../static/images/logo.jpg"><cite><span :visible ="el.side == '2'">{{@contacts_id}}</span>
+                            <i>{{el.send_time | date("yyyy-MM-dd HH:mm:ss")}}</i><span :visible ="el.side == '1'">{{@admin_}}</span></cite>
+                        </div>
+                        <div class="chat-text">
+                            <div >
+                                {{el.msg}}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </ul>
+            <ul :visible="!@ChatLogHistoricalParent">
+                <li style="margin-bottom: 0">
+                    <div class="chat-text" >
+                        <div >
+                            暂无记录
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--<div id="show"></div>-->
+<!--<div class="comment">-->
+    <!--<div class="com_form">-->
+        <!--<textarea class="input" id="saytext" name="saytext"></textarea>-->
+        <!--<p><input type="button" class="sub_btn" value="提交"><span class="emotion">表情</span></p><img src="../../static/images/face/1.gif" alt=""/>-->
+    <!--</div>-->
+<!--</div>-->

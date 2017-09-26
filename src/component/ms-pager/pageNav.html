@@ -1,0 +1,30 @@
+<div class="page_nav_wraper clearfix" ms-visible='@totalPages > 1'>
+    <div class="page_btn">
+        <input type="button"
+               ms-class='{disabled: @isDisabled("prev",1)}'
+               value="上一页"
+               :click="@cbProxy($event,'prev')">
+
+        <input type="button"
+               ms-for ="page in @pages"
+               :attr ="{value: @page}"
+               class="default"
+               :class ='{active: @page == @currentPage}'
+               :click ="@cbProxy($event,@page)">
+
+        <input type="button"
+               ms-class='{disabled: @isDisabled("next",@totalPages)}'
+               value="下一页"
+               :click="@cbProxy($event,'next')">
+    </div>
+    <div class="page_num">
+        <span >总共{{totalPages}}页</span>
+        到第<input type="text"
+                    name="pageNumber"
+                    :duplex-number="@skipToNum"
+                    :keypress="@enter($event)"
+                    :blur="@cbProxy($event,@skipToNum)">页
+        <!--<button class="skip-btn"-->
+                 <!--:click="@cbProxy($event,@skipToNum)">确定</button>-->
+    </div>
+</div>

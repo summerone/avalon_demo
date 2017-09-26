@@ -1,0 +1,207 @@
+<div class="pull-right slider_right" ms-controller="tjqyh" :css="[ @toggle && @objWidthtwo]">
+    <div class="right_header">
+            <span class="pull-left">企业号列表</span>
+            <button class="pull-right btn btn-info btn-sm" data-toggle="modal" data-target="#tjqyh_">添加企业号</button>
+        </div>
+    <div class="content_right pull-left">
+            <ul>
+                <li :for="el in @cxqyh">
+                    <div class="list">
+                        <div class="thumbnail over_hidden" >
+                            <img class="img-circle pull-left" src="../../static/images/qylogo.png">
+                            <div class="caption pull-left cap_text pointer_all" :click="@xqfunction(el.corp_name,el.corp_id)">
+                                <p class="color_blue">{{el.corp_name}}</p>
+                                <p class="color_aaa">{{el.corp_id}}</p>
+                            </div>
+                            <div class="pull-right list_right">
+                                <span class="color_aaa">状态：</span>
+                                    <span class="margin_left20 margin_top" >
+                                        <span class="jingyong"  :visible="el.status == 0" :click="@statusChange(el.corp_id,1)">
+                                          <span class="li" ></span>
+                                          <span class="neirong">禁用</span>
+                                       </span>
+                                        <span class="qiyong"  :visible="el.status == 1" :click="@statusChange(el.corp_id,0)">
+                                          <span class="li"></span>
+                                          <span class="neirong">启用</span>
+                                       </span>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center red" :if="@cxqyh.length == 0">暂无数据</div>
+                </li>
+            </ul>
+            <!--分页-->
+            <div class="page_"></div>
+    </div>
+    <!--添加企业号-->
+    <div class="pull-right tjqyh hide">
+        <div class="tjqyh_header">
+            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#tjyingy">添加应用</button>
+            <button class="btn btn-default btn-sm"><a class="color_hei" :attr="{href:'#!/glylb'}">添加管理人员</a></button>
+            <span class="close" :click="@closefunction">&times;</span>
+        </div>
+        <div class="tjqyh_body">
+            <div class="thumbnail over_hidden" >
+                <img class="img-circle pull-left" src="../../static/images/qylogo.png">
+                <div class="caption pull-left cap_text">
+                    <input class="color_blue" id="name" :click="@namefunction()" ms-duplex="@name">
+                    <input class="color_aaa" :click="@namefunction()" id="shuihao" ms-duplex="@shuihao" >
+                </div>
+            </div>
+        </div>
+        <div class="tjqyh_footer">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a data-toggle="tab" class="color_hei" href="#yingyong">应用</a></li>
+                <li role="presentation"><a data-toggle="tab" class="color_hei" href="#guanlirenyuan">管理人员</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="yingyong">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>应用名称</td>
+                            <td>应用说明</td>
+                            <td>状态</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr :for="el in @yylb">
+                            <td>{{el.app_name}}</td>
+                            <td>{{el.memo}}</td>
+                            <td :attr="{id:el.agent_id}" class="pointer_all">
+                                    <span class="jingyong"  :visible="el.status == 0" :click="@statusAppChange(el.app_id,1,el.agent_id)">
+                                          <span class="li" ></span>
+                                          <span class="neirong">禁用</span>
+                                    </span>
+                                    <span class="qiyong"  :visible="el.status == 1" :click="@statusAppChange(el.app_id,0,el.agent_id)">
+                                          <span class="li"></span>
+                                          <span class="neirong">启用</span>
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="guanlirenyuan">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>用户名</td>
+                            <td>真名</td>
+                            <td>效期起止</td>
+                            <td>状态</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr :for="el in @gllb">
+                            <td>{{el.username}}</td>
+                            <td>{{el.realname}}</td>
+                            <!--<td>{{el.until}}-{{el.valid}}</td>-->
+                            <td>无</td>
+                            <td :attr="{id:el.admin_id}" class="pointer_all">
+                                    <span class="jingyong"  :visible="el.status == 0" :click="@statusAaminChange(el.admin_id,1,el.corp_id)">
+                                          <span class="li" ></span>
+                                          <span class="neirong">禁用</span>
+                                    </span>
+                                    <span class="qiyong"  :visible="el.status == 1" :click="@statusAaminChange(el.admin_id,0,el.corp_id)">
+                                          <span class="li"></span>
+                                          <span class="neirong">启用</span>
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal添加企业号 -->
+    <div class="modal fade" id="tjqyh_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">添加企业号</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>用户昵称</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" placeholder="请输入用户名称" :duplex = '@yhmc' id="add_yhmc"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>企业号</td>
+                            <td class="text-left last_td "><input class="last_text" type="text" placeholder="请输入企业号"  ms-duplex= '@qyh' id="add_qyh"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>启用状态</td>
+                            <td class="text-left last_td">
+                                    <span class="qiyong" :click="@statusMfunction('tjqyh_')">
+                                           <span class="li"></span>
+                                           <span class="neirong">启用</span>
+                                    </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">备注</td>
+                            <td class="text-left last_td"><textarea class="last_text" :duplex = '@bz'></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消编辑</button>
+                    <button type="button" class="btn btn-primary"  :click="@tjqyhfunction">确认添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal添加应用 -->
+    <div class="modal fade" id="tjyingy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">添加应用</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">应用ID</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" placeholder="请输入应用ID" :duplex="@yyid" id="add_yyid"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">应用密匙</td>
+                            <td class="text-left last_td "><input class="last_text" type="text" placeholder="请输入应用密匙" :duplex="@yyms" id="add_yyms"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">应用名称</td>
+                            <td class="text-left last_td "><input class="last_text" type="text" placeholder="请输入应用名称" :duplex="@yymc" id="add_yymc"/></td>
+                        </tr>
+                        <!--<tr>-->
+                        <!--<td class="text-right first_td">类型</td>-->
+                        <!--<td class="text-left last_td "><input class="last_text" type="text" placeholder="请输入类型" :duplex="@yylx"/></td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <td class="text-right first_td">启用状态</td>
+                            <td class="text-left last_td">
+                                <span class="qiyong" :click="@statusMfunction('tjyingy')">
+                                       <span class="li"></span>
+                                       <span class="neirong">启用</span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">应用说明</td>
+                            <td class="text-left last_td"><textarea class="last_text" :duplex="@yysm" id="add_yysm"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消编辑</button>
+                    <button type="button" class="btn btn-primary"  :click="@tjyyfunction">确认添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

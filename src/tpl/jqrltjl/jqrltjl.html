@@ -1,0 +1,81 @@
+<div class="pull-right slider_right ms-controller" :css="[ @toggle && @objWidthtwo]" id="ggfb" :controller="messageList" >
+    <!--查看-->
+    <div class="lookxiangqing" >
+        <div class="header" style="padding: 7px;" >
+            <span class="tjggxx">聊天记录</span>
+        </div>
+        <!--左边的导航-->
+        <div class="pull-left  center-block zbdh" >
+            <div style="position: absolute;bottom: 0;top: 37px;width: 15%;">
+                <ul style="margin-top: 0">
+                    <li class=" nav-header menu-first collapsed center-block" data-toggle="collapse"  :click="@listmeau('',1,true)">
+                        <p id="allList" class="color_blue backfff">全部聊天记录 </p>
+                    </li>
+                    <li  class=" nav-header menu-first collapsed" data-toggle="collapse" :for="el in @menulist" :click="@listmeau(el.agent_id,1,true)">
+                        <p :attr="{id:el.agent_id}"><img :attr="{src:el.img_path}"  class="img-circle" style=" margin-right:15px;width: 30px;height:30px;"/>{{el.app_name}} </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--list-->
+        <div  class="list_meun main-right pull-right main-rightZn table-responsive">
+            <table class="table table-hover "  :css="[@objtrue && @objWidth]" style="margin-top: 0">
+                <thead>
+                    <tr>
+                        <td style="font-weight: bold">用户ID</td>
+                        <td style="font-weight: bold">聊天记录</td>
+                    </tr>
+                </thead>
+                <tr :click="@meunclick(el.chat_id,el.contacts_id)" :for="el in @menulistchat">
+                    <td class="cursor">{{el.contacts_id}}</td>
+                    <td >{{el.lastMsg.question}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <div id="pageList"></div>
+                    </td>
+                </tr>
+            </table>
+            <div class="chat_list" :class="[@objtrueList&& 'hidden']" style="width: 30%">
+                <div class="messageList" style="padding: 0 10px;"><span class="pull-left" style="line-height: 33px;">{{@contacts_id}}</span>
+                    <!--<button class="btn btn-info margin_left15" data-target="#BatchDelete" data-toggle="modal">批量删除</button>-->
+                    <i class="iconfont icon-xx pull-right cursor"  style="line-height: 33px;" :click="@clcose"></i></div>
+                <div class=" chat-main" style="height: auto;padding: 0">
+                    <ul style="height: auto;margin: 0;padding: 10px;" :for="el in @onlyOneList">
+                        <li style="margin-bottom: 0">
+                            <div class="chat-user">
+                                <img src="../../static/images/logo.jpg"><cite><span >{{@contacts_id}}</span> <i style="display: inline-block">{{el.send_time | date("yyyy-MM-dd HH:mm:ss")}}</i></cite>
+
+                            </div>
+                            <div class="chat-text">
+                                <div >
+                                    {{el.question}}
+                                </div>
+                            </div>
+                        </li>
+                        <li style="margin-bottom: 0" class=" chat-mine-right">
+                            <div class="chat-user">
+                                <img src="../../static/images/logo.jpg"><cite>
+                                <i style="display: inline-block">{{el.send_time | date("yyyy-MM-dd HH:mm:ss")}}</i><span >机器人</span></cite>
+                            </div>
+                            <div class="chat-text">
+                                <div >
+                                    {{el.answer}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul :visible="!@onlyOneList">
+                        <li style="margin-bottom: 0">
+                            <div class="chat-text" >
+                                <div >
+                                    暂无记录
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

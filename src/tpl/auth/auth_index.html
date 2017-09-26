@@ -1,0 +1,81 @@
+<div class="pull-right slider_right ms-controller text-center" :controller="auth_index" :css="[ @toggle && @objWidthtwo]">
+    <div>
+        <div class="framework-container framework-sidebar-full"><div class="ibox">
+
+            <div class="ibox-title notselect">
+                <h5>系统权限管理</h5>
+
+                <div class="nowrap pull-right" style="margin-top:10px">
+                    <button data-modal="/admin/auth/add.html" data-title="添加权限" class="layui-btn layui-btn-small"><b  class="iconfont icon-xinjian"></b> 添加权限</button>
+                    <button data-update="" data-field="delete" data-action="/admin/auth/del.html" class="layui-btn layui-btn-small layui-btn-danger"><b  class="iconfont icon-jian"></b> 删除权限</button>
+                </div>
+
+            </div>
+            <div class="ibox-content">
+
+                <form onsubmit="return false;" data-auto="true" method="post" data-listen="true" novalidate="novalidate">
+                    <input type="hidden" value="resort" name="action">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="list-table-check-td">
+                                <input data-none-auto="" data-check-target=".list-check-box" type="checkbox">
+                            </th>
+                            <th class="list-table-sort-td">
+                                <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+                            </th>
+                            <th class="text-center">权限名称</th>
+                            <th class="text-center">状态</th>
+                            <th class="text-center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody :for="el in @queryOneAuthList">
+                        <tr >
+                            <!--<div>-->
+                                <!--<div><ul><li :for="value in el.permissionList">{{value.name}}</li></ul></div>-->
+                            <!--</div>-->
+                            <td class="list-table-check-td">
+                                <input class="list-check-box" value="23" type="checkbox">
+                            </td>
+                            <td class="list-table-sort-td">
+                                <input name="_23" :attr='{value:el.role_id}' class="list-sort-input">
+                            </td>
+                            <td class="text-center">{{el.role_name}}</td>
+                            <td class="text-center">
+                                <span style="color:#090">使用中</span>
+                            </td>
+                            <td class="text-center nowrap">
+                                <span class="text-explode">|</span>
+                                <span class="nav-header menu-first collapsed" data-toggle="collapse" href="javascript:void(0)">编辑</span>
+                                <span class="text-explode">|</span>
+                                <a data-open="/admin/auth/apply.html?id=23" href="javascript:void(0)">授权</a>
+                                <span class="text-explode">|</span>
+                                <a data-update="23" data-field="status" data-value="0" data-action="/admin/auth/forbid.html" href="javascript:void(0)">禁用</a>
+                                <span class="text-explode">|</span>
+                                <a data-update="23" data-field="delete" data-action="/admin/auth/del.html" href="javascript:void(0)">删除</a>
+
+                            </td>
+                        </tr>
+                        <tr class="chidrenList" :for="value in el.permissionList" class="nav nav-list collapse menu-second">
+                            <td colspan="4" style="padding: 0">
+                                <ul>
+                                    <li >{{value.name}}</li>
+                                </ul>
+                            </td>
+                            <td class="lastTd"   style="padding: 0">
+                                <div>
+                                    <button class="openbutton">打开</button> <button class="closebutton">关闭</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p></p></form>
+
+            </div>
+
+        </div></div>
+    </div>
+</div>
+<!--
+{/block}-->

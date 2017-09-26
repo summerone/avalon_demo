@@ -1,0 +1,10 @@
+.idea
+dist.rar
+.project
+dist/*
+node_modules/*
+.settings/*
+.settings
+package.json
+package-lock.json
+webpack.config.js

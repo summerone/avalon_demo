@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>企业微信</title>
+    <!--[if lt IE 9]>
+    <script src="./static/lib/oldie/html5shiv.min.js"></script>
+    <script src="./static/lib/oldie/respond.min.js"></script>
+    <script src="./static/lib/oldie/json3.min.js"></script>
+    <script src="./static/lib/oldie/es5-shim.min.js"></script>
+    <script src="./static/lib/oldie/es5-sham.min.js"></script>
+    <script src="./static/lib/oldie/promise.js"></script>
+    <script src="./static/lib/oldie/IE9.js"></script>
+    <![endif]-->
+    <script>
+        /*IE8兼容start*/
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function (item, i) {
+                //alert("prototyping...");
+                i || (i = 0);
+                var length = this.length;
+                if (i < 0) i = length + i;
+                for (; i < length; i++)
+                    if (this[i] === item) return i;
+                return -1;
+            };
+        }
+        if (!window.WebSocket) {
+            window.WebSocket = function () { };
+            window.WebSocket.prototype = {
+                onmessage: function () { },
+                onclose: function () { },
+                onopen: function () { },
+                close: function(){}
+            }
+        }
+        /*IE8兼容end*/
+    </script>
+    <link rel="stylesheet" href="static/lib/layui/css/layui.css">
+</head>
+<body class="ms-controller" ms-controller="menu">
+<div class="headerLogin">
+    <img src="./static/images/logo.png"/>
+    <div class="pull-right margin_right8">
+        <span class="margin_right8"><i class="iconfont icon-yonghu color_f"></i></span>
+        <span class="color_f margin_right8">{{@loginname}}</span>
+        <div class="margin_right8 text_font" :hover="@hoverClass"><i class="iconfont icon-xiala2 color_f" ></i>
+            <ul>
+                <li :click="@loginOut">退出登录</li>
+                <li data-toggle="modal" data-target="#indextjqyh_">修改密码</li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<!-- Modal修改密码 -->
+<div class="modal fade" id="indextjqyh_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title">修改密码</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>旧密码</td>
+                        <td class="text-left last_td"><input class="last_text" type="password" placeholder="请输入原来密码" ms-duplex="@old_psw" id="old_psw"/></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>新密码</td>
+                        <td class="text-left last_td "><input class="last_text" type="password" placeholder="请输入新密码" ms-duplex="@new_psw" id="new_psw"/></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" :click="@indexchangepwd">确认修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content" ms-controller="test">
+    <!--left——slider-->
+    <div class="pull-left slider_left" :css="[ @toggle && @objWidth]">
+        <div class="text-center caidan_color"><i class="iconfont icon-caidan" :click="@chasl" :hover="@cursor"></i></div>
+        <div class="sidebar-menu">
+            <ul >
+                <a :for="el in @caidan" :attr="{href: (el.menu_id == 6 ? 'http://qywx.4008990000.net/ticket.html' :'#!'+ el.url)}">
+                    <li  :attr="{href:'#!'+ el.url}" class=" nav-header menu-first collapsed">
+                        <p><i class="padding-20left iconfont" :class="el.menu_class" :attr="{title:el.menu_name}"></i><span :visible="@toggle">{{ el.menu_name}}</span><!--<i class="pull-right iconfont icon-jiantouxiangyou"></i>--></p>
+                    </li>
+                </a>
+            </ul>
+        </div>
+        <a href="#!/webChat" class="color_fff" id="webchatCenter">
+            <div  class="sidebar_ponter" title="客服中心" :css="[ @toggle && @objWidthborder0]">
+                <div class="icon" :css="[ @toggle && @objWidthback]"><i class="iconfont icon-kefu-xuanzhong" :css="[ @toggle && @objWidthtree]"></i></div>
+                <div :visible="@toggle">客服中心</div>
+            </div>
+        </a>
+    </div>
+    <!--right-->
+    <div ms-html="@main" class="clearfix" ></div>
+</div>
+<script src="static/lib/layui/layui.js"></script>
+<script src="static/lib/ueditor/ueditor.config.js"></script>
+<script src="static/lib/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

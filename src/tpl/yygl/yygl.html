@@ -1,0 +1,166 @@
+<div class="pull-right slider_right ms-controller" ms-controller="yygl" :css="[ @toggle && @objWidthtwo]">
+    <div class="right_header">
+        <span class="pull-left">应用管理</span>
+        <button class="pull-right btn btn-info btn-sm" id="addBtn" data-toggle="modal" data-target="#tjqyh_"  :click="@tjyy">{{@tjyyglhtml}}</button>
+    </div>
+
+    <!-- 添加应用 -->
+    <div  id="add" :class="[@tjxyjupm && 'hidden']">
+        <form class="form-horizontal" >
+            <!--<button type="button" class="btn btn-default" style="margin-left:20px;margin-top:10px;" id="rutBtn" :click="@tjyy">返回</button>-->
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label style="margin-left:250px	;">添加新应用</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" :hover="@xltoogle">
+                <label  class="col-sm-2 control-label" style="margin-left:150px;">应用logo</label>
+                <div class="col-xs-4"style="position: relative">
+                    <input type="text" class="form-control" placeholder="请选择需要的logo" :duplex="@tjxyyobj.src" id="src">
+                    <div class="xlidren"  style="">
+                        <ul>
+                            <li class="pull-left margin" :click="@srcfunction('lingdang')"><img style="width: 30px;height:30px;" src="../../static/images/lingdang.png" /></li>
+                            <li class="pull-left margin" :click="@srcfunction('measage')"><img style="width: 30px;height:30px;" src="../../static/images/measage.png" /></li>
+                            <li class="pull-left margin" :click="@srcfunction('nztz')"><img style="width: 30px;height:30px;" src="../../static/images/nztz.png" /></li>
+                            <li class="pull-left margin" :click="@srcfunction('zixun')"><img style="width: 30px;height:30px;" src="../../static/images/zixun.png" /></li>
+                            <li class="pull-left margin" :click="@srcfunction('gdcs')"><img style="width: 30px;height:30px;" src="../../static/images/gdcs.jpg" /></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" style="margin-left:150px;">应用ID</label>
+                <div class="col-xs-4"><input type="text" class="form-control" placeholder="请输入应用ID" :duplex = '@tjxyyobj.agent_id' id="agent_id"></div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" style="margin-left:150px	;">应用秘钥</label>
+                <div class="col-xs-4"><input type="password" class="form-control" placeholder="请输入应用秘钥" :duplex = '@tjxyyobj.secret' id="secret"></div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" style="margin-left:150px;">应用名称</label>
+                <div class="col-xs-4"><input type="text" class="form-control" placeholder="请输入应用名称" :duplex = '@tjxyyobj.app_name' id="app_name"></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"  style="margin-left:150px;">所属企业号</label>
+                <div class="col-xs-4"><input type="text" class="form-control" placeholder="请输入所属企业号" :duplex = '@tjxyyobj.corp_id' id="corp_id"></div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-sm-2 control-label"  style="margin-left:150px;">备注</label>
+                <div class="col-xs-4"><input type="text" class="form-control" :duplex = '@memo'></div>
+            </div>-->
+            <div class="form-group">
+                <label  class="col-sm-2 control-label"  style="margin-left:150px;">应用介绍</label>
+                <div class="col-xs-4"><textarea class="form-control" rows="3" placeholder="请输入应用介绍" :duplex = '@tjxyyobj.memo' id="memo"></textarea></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-xs-4">
+                    <button type="button" class="btn btn-info  btn-block btn-default " :click="@addYyglList" style="margin-left:150px;">添加新应用</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 修改应用 -->
+    <div class="add_yingyong_cg " id="changeYygl" :class="[@tjxyjupmxg && 'hidden']">
+        <div style="text-align: center;margin-top: 30px;">
+            <span style="font-weight: bold;">公告</span>
+            <div style="margin-left: auto;margin-right: auto;width: 780px;height: 450px;margin-top: 15px;">
+                <div class="add_yingyong_cg_body_s container" style="width: 779px;">
+                    <div class="row">
+                        <div class="col-md-1" style="line-height: initial">
+                            <i class="iconfont icon-gonggao1 cs" style="font-size: 40px; color: #FFB331"></i>
+                        </div>
+                        <div class="col-md-8">
+                            <div style="float: left;">
+                                <span style="color: blue;font-weight: bold;font-size: 21px;">公告</span>
+                            </div>
+                            <div  style="float: left;position: relative;margin-top: 30px;margin-left: -41px;">
+                                <span style="color: #c1bcbc;">{{@update.memo}}</span>
+                                <span style="color: #c1bcbc;" :if="@update.memo == ''">暂无公告</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 14px;">
+                            <span class="margin_left20 margin_top">
+                                <span class="jingyong"  :visible="@update.status == 0" >
+                                    <span class="li" ></span>
+                                    <span class="neirong">禁用</span>
+                                </span>
+                                <span class="qiyong"  :visible="@update.status == 1" >
+                                    <span class="li"></span>
+                                    <span class="neirong">启用</span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_yingyong_cg_body_x" style="border-top:1px solid #eee;padding-top:30px;margin-top: 20px;">
+                    <div style="height: 40px;">
+                        <span class="text-left" style="display:inline-block;color: #c1bcbc;width: 12%;">应用ID</span>
+                        <span  class="text-left" :class="[@spanHidden && 'hidden']" style="padding-left:5px;display:inline-block;width:88%;text-align: left;font-size: 16px;" >{{@update.app_id}}</span>
+                        <input  type="text" class="form-control" :class="[@inputHidden && 'hidden']" readonly="true" style="width: 50%;display: inline;" ms-duplex="@update.app_id">
+                        <div  :class="[@spanHidden && 'hidden']" style="margin-top: -15px;margin-left: 625px;" class="pointer_all" :click="@yygl_bj"><span  style="color: blue;">编辑</span></div>
+                    </div>
+                    <div style="height: 40px;">
+                        <span class="text-left" style="display:inline-block;width:12%;color: #c1bcbc;">应用密钥</span>
+                        <span  class="text-left" :class="[@spanHidden && 'hidden']" style="padding-left:5px;display:inline-block;width:88%;text-align: left;font-size: 16px;">{{@update.secret}}</span>
+                        <input  type="text" :class="[@inputHidden && 'hidden']" class="form-control" style="width: 50%;display: inline;" ms-duplex="@update.secret">
+                    </div>
+                    <div style="height: 40px;">
+                        <span class="text-left" style="display:inline-block;color: #c1bcbc;width: 12%">所属企业号</span>
+                        <span  :class="[@spanHidden && 'hidden']" class="text-left" style="padding-left:5px;display:inline-block;width:88%;text-align: left;font-size: 16px;">{{@update.agent_id}}</span>
+                        <input  type="text" class="form-control" :class="[@inputHidden && 'hidden']" style="width: 50%;display: inline;" ms-duplex="@update.agent_id">
+                    </div>
+                    <div style="height: 40px;">
+                        <span class="text-left" style="display:inline-block;color: #c1bcbc;width: 12%">备注</span>
+                        <span  :class="[@spanHidden && 'hidden']" class="text-left" style="padding-left:5px;display:inline-block;width:88%;font-size: 16px;">{{@update.memo}}</span>
+                        <input  type="text" :class="[@inputHidden && 'hidden']"  class="form-control" style="width: 50%;display: inline;" ms-duplex="@update.memo">
+                    </div>
+                    <div style="position: relative;margin-left: 70px;">
+                        <button type="button" :click="@yygl_bj_qx" :class="[@inputHidden && 'hidden']" class="btn btn-default" style="height: 30px;width: 60px;">取消</button>
+                        <button type="button"  :click="@yygl_bj_sure" :class="[@inputHidden && 'hidden']" class="btn btn-info" style="height: 30px;width: 60px;margin: 10px;">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--主页面 -->
+    <div class="content_right pull-left" :class="[@tjxymain && 'hidden']">
+        <ul id="addul" style="width:100%;">
+            <li>
+                <div class="list" style="margin-left:10px;margin-top:10px;">
+                    <div class="thumbnail over_hidden" :for="el in @yyglList" :hover="@displaynone">
+                        <img class="img-circle pull-left" :attr='{src:el.img_path}'>
+                        <div class="caption pull-left cap_text">
+                            <p class="color_blue">{{el.app_name}}</p>
+                            <p class="color_aaa">{{el.memo}}</p>
+                        </div>
+                        <div class="pull-right list_right pointer_all">
+                            <div class="pull-right ">
+                                <span class="color_aaa">状态：</span>
+                                    <span class="margin_left20 margin_top">
+                                        <span class="jingyong"   :visible="el.status == 0" :click="@statuszt(el.app_id,'1')">
+                                          <span class="li" ></span>
+                                          <span class="neirong">禁用</span>
+                                        </span>
+                                        <span class="qiyong"   :visible="el.status == 1" :click="@statuszt(el.app_id,'0')">
+                                          <span class="li"></span>
+                                          <span class="neirong">启用</span>
+                                       </span>
+                                    </span>
+                            </div>
+                            <div  class="pull-right btn_hidden" >
+                                <button type="button" class="margin_right8 btn-link" :click="@changeYygl(el)" :attr="{id:el.app_id}"><i class="iconfont icon-modify margin_right8"></i>修改</button>
+                                <button type="button" class=" btn-link" :click="@deleteYyglList(el.app_id)" style="margin-right:20px;"><i class="iconfont icon-shanchu margin_right8"></i>删除</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="text-center margin_top" id="yyglpage"></div>
+    </div>
+</div>

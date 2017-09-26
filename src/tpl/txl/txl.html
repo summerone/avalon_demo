@@ -1,0 +1,622 @@
+<div class="pull-right slider_right ms-controller "   id="txl"  :css="[ @toggle && @objWidthtwo]" :controller="txl" :click="@bodyclose">
+    <div class="right_header" >
+        <span class="pull-left">企业通讯录</span>
+    </div>
+    <!--左边菜单栏-->
+    <div class="pull-left  center-block" style="width:15%;">
+        <div   style="background:#F9FAFC;position: absolute;top:40px;bottom: 0;width: 15%" >
+            <ul class="parentList">
+                <li  class=" nav-header menu-first collapsed center-block text-center" data-toggle="collapse">
+                    <button type="button" class="btn btn-info btn-sm" style="width:90%;margin-top:5px;" data-toggle="modal" data-target="#newFl_"><i class=" iconfont icon-xinjian" style="font-size: 14px;margin-right: 10px;"></i>新建分类</button>
+                </li>
+
+                <li class="margin_10 nav-header menu-first collapsed center-block" data-toggle="collapse">
+                    <p style="text-align:left;cursor:pointer;padding-left:15px;" id='all' class="backblue color_f" :click="@listxiang('',1,true)">全部分类</p>
+                </li>
+             <ul :for="el in @listone" class="listGrout">
+                    <li  :hover="@disCss" ms-attr="{href:'#'+ el.group_name}" class="parent nav-header menu-first collapsed" data-toggle="collapse" >
+                        <p style="text-align:left;cursor:pointer;padding-left:15px;" :attr="{id:el.group_id,title:el.group_name}" :click="@listxiang(el.group_id,1,true)"><!--<i class="pull-left iconfont icon-jiantouxiangyou"></i>--> {{el.group_name | truncate(10,'...')}} ({{el.count}})</p>
+                        <div :hover="@disCss">
+                            <i  class="pull-right color_f cursor iconfont icon-fengexianICONCopy"></i>
+                            <ul>
+                            <li data-toggle="modal" data-target="#changeName":click="@groupName(el.group_id)">修改名称</li>
+                            <li data-toggle="modal"   :click="@deletefl(el.group_id,el.group_name)">删除</li>
+                        </ul></div>
+                    </li>
+                    <ul ms-attr="{id: el.group_name}" class=" nav nav-list collapse menu-second">
+                        <li class="children" :hover="@disCss"  :for="children in el.list" :click="@listxiang(children.group_id,children.corp_id)">{{children.group_name}} <i class="color_f iconfont icon-fengexianICONCopy"></i>
+                            <div ><ul>
+                                <li data-toggle="modal" data-target="#changezfl">添加子分类</li>
+                                <li data-toggle="modal" data-target="#changeName">修改名称</li>
+                                <li data-toggle="modal" data-target="#deletefl">删除</li>
+                            </ul></div>
+                        </li>
+                    </ul>
+             </ul>
+            </ul>
+        </div>
+    </div>
+    <!--main-->
+    <div class="content_right " :class="[@mainhidden && 'hidden']" id="yygl1"  style="width:81%;position:absolute;top:40px;right:0;bottom: 0">
+        <div class=" dropdown" id="alignIcons" style="margin-bottom: 10px">
+            <!--<span class="">重点税源户(50户)</span>-->
+            <div  class="border0 backfff dropdown-toggle pull-right dropdown_menu_border" :class="[@choosebloor && 'borbottom0']"  :click="@choosebloor = !@choosebloor, @choosemeun = !@choosemeun">筛选
+                <span class="caret"></span>
+            </div>
+            <div class="dropdown-menu pull-bottom pull-right" :class="[@choosemeun && 'hidden']" style="width:570px;top: 30px;padding-bottom: 30px;z-index: 0;border-radius:0" :click="@dropdown_menu_no">
+                <div>
+                    <table style="border: 1px solid #eee;width: 98%;margin-left: 5px;">
+                        <tr style="height: 40px;border-bottom: 1px solid #eee;">
+                            <td style="width: 30%;text-align: right;"><label>纳税人识别号</label></td>
+                            <td><input type="text" style="padding-left: 10px;width: 100%;border: 0px;" class="" id="nsrsbh" ms-duplex="@nsrsbh"></td>
+                        </tr>
+                        <tr style="height: 40px;border-bottom: 1px solid #eee;">
+                            <td style="width: 30%;text-align: right;"><label>纳税人名称</label></td>
+                            <td><input type="text" style="padding-left: 10px;width: 100%;border: 0px;" class="" id="nsrmc" ms-duplex="@nsrmc"></td>
+                        </tr>
+                        <tr style="height: 40px;">
+                            <td style="width: 30%;text-align: right;"><label>所属行业</label></td>
+                            <td><input type="text" style="padding-left: 10px;width: 100%;border: 0px;" class="" id="hymc" ms-duplex="@hymc" :keyup="@myFunction"  placeholder="例：“通信系统设备制造”"></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--所属行业的下拉选-->
+                <div id="sshy_select" style="position: absolute;width: 98%;margin-left: 5px;display: none;height: 200px;overflow: auto;border-top: 0">
+                    <table id="myTable" style="box-shadow: 0px 0px 4px -0.5px;border-top: 0;border: 1px solid #EEEEEE;width: 75%;margin-left: 120px;background-color: white;border-top: 0">
+                        <tr ms-for="(index,el) in @sshymcList">
+                        <td style="padding:3px;padding-left: 8px" :click="@selectValue(el)">{{el}}</td>
+                      </tr>
+                    </table>
+                </div>
+                <div style="margin-top: 10px;">
+                    <table style="border: 1px solid #eee;width: 98%;margin-left: 5px;">
+                        <tr style="height: 40px;border-bottom: 1px solid #eee;">
+                            <td style="width: 30%;text-align: right;"><label>注册登记类型</label></td>
+                            <td><input type="text" style="width: 100%;border: 0px; padding-left: 10px;" class="" ms-duplex="@djzclxmc" id="djzclxmc" :keyup="@myFunction_djzclx" placeholder="例：“私营有限责任公司”"></td>
+                        </tr>
+                        <tr style="height: 40px;">
+                            <td style="width: 30%;text-align: right;"><label>是否一般纳税人</label></td>
+                            <td style="padding-left: 10px;">
+                                <input type="radio" name="ybnsr"  value="y" ms-duplex="@ybnsr">是
+                                <input class="margin_left15" type="radio" name="ybnsr" value="n" style="margin-left: 15px;" ms-duplex="@ybnsr">否
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--注册登记类型的下拉选 -->
+                <div id="djzclxmc_select" style="position: absolute;width: 98%;margin-left: 5px;margin-top:-40px;display: none;height: 200px;overflow: auto;border-top: 0">
+                    <table id="djzclxmc_myTable" style="border: 1px solid #EEEEEE;width: 70%;margin-left: 120px;background-color: white;box-shadow: 0px 0px 4px -0.5px;border-top: 0">
+                        <tr ms-for="(index,el) in @djzclxmcList">
+                          <td style="padding:3px;padding-left: 8px" :click="@selectValue_djzclx(el)">{{el}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-top: 10px;">
+                    <table style="border: 1px solid #eee;width: 98%;margin-left: 5px;">
+                        <tr style="height: 40px;border-bottom: 1px solid #eee;">
+                            <td style="width: 25%;text-align: right;"><label>登记注册日期范围</label></td>
+                            <td>
+                                <input type="text" class=" laydate-icon" onclick="layui.laydate({elem: this})" style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@rkrqq">
+                                <span style="padding: 10px;">到</span>
+                                <input type="text" class=" laydate-icon" onclick="layui.laydate({elem: this})" style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@rkrqz">
+                            </td>
+                        </tr>
+                        <tr style="height: 40px;border-bottom: 1px solid #eee;">
+                            <td style="width: 25%;text-align: right;"><label>上年税收入库范围</label></td>
+                            <td>
+                                <input type="text" class=""  style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@sdsq">
+                                <span style="padding: 10px;">到</span>
+                                <input type="text" class=""  style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@sdsz">
+                            </td>
+                        </tr>
+                        <tr style="height: 40px;">
+                            <td style="width: 30%;text-align: right;"><label>上年增值税入库范围</label></td>
+                            <td>
+                                <input type="text" class=""  style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@zzsq">
+                                <span style="padding: 10px;">到</span>
+                                <input type="text" class=""  style="padding-left: 10px;width:150px;height:25px;display: inline-table;border: 0px;" ms-duplex="@zzsz">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <button class="btn btn-info pull-right" style="margin-right: 20px;width:80px;margin-top: 10px;" :click="@validate_input_sx(1,true)">查询</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" :class="[@tjxqlist && 'hidden']" style="z-index:100;margin-bottom:0;width:60%;position:absolute; left:43%; top:-15px;bottom: 0px;overflow: auto " id="xq">
+            <div class="panel-heading" >
+                <button type="button" class="btn btn-default " style="width:100px;" :click="@deleteqy(@datalist.djxh)">删除企业</button>
+                <i class="iconfont icon-guanbi" style="float:right;" :click="@gbxq"></i>
+            </div>
+            <div class="panel-body" style="border-bottom: 1px solid #eee;">
+                <span style="border-left: 2px solid #00A4E1;padding-right: 8px;"></span><span style="color:#00A4E1;">企业详情</span>
+                <ul class="qyxq">
+                    <li ><i class="iconfont icon-dian"></i>登记序号：<span >{{@datalist.djxh}}</span></li>
+                    <li><i class="iconfont icon-dian"></i>企业名称：<span >{{@datalist.nsrmc}}</span></li>
+                    <li><i class="iconfont icon-dian"></i>纳税人识别号：<span >{{@datalist.nsrsbh}}</span></li>
+                    <li ><i class="iconfont icon-dian"></i>行业：<span >{{@datalist.hymc}}</span></li>
+                    <li ><i class="iconfont icon-dian"></i>注册登记类型：<span >{{@datalist.djzclxmc}}</span></li>
+                    <li :visible="@datalist.ybnsr == 'Y'"><i class="iconfont icon-dian"></i>是否一般纳税人：<span >是</span></li>
+                    <li :visible="@datalist.ybnsr == 'N'"><i class="iconfont icon-dian"></i>是否一般纳税人：<span >否</span></li>
+                    <li ><i class="iconfont icon-dian"></i>上年增值税入库数：<span>{{@datalist.snzzsrk}}</span></li>
+                    <li ><i class="iconfont icon-dian"></i>上年消费税入库数：<span>{{@datalist.snxfsrk}}</span></li>
+                    <li ><i class="iconfont icon-dian"></i>上年企业所得税入库数：<span>{{@datalist.snqysdsrk}}</span></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <span style="border-left: 2px solid #00A4E1;padding-right: 8px;margin-left:20px;"></span><span style="color:#00A4E1;">人员详情</span>
+                <ul style="display:inline-block;margin-top:20px;width:100%;height:70px;">
+                    <li style="position: relative" :hover="@bkxsc" :for="el in @listcontact">
+                            <div class="thumbnail over_hidden" >
+                                <img class=" pull-left" src="../../static/images/lxrheader.png">
+                                <div class="caption pull-left cap_text"  >
+                                    <p style="margin-bottom: -1px;">{{el.name}}</p>
+                                    <p class="color_aaa"><i class="iconfont icon-dianhua"  style="padding-right: 8px;font-size: 8px;"></i> <span >电话：{{el.telephone}}</span></p>
+                                </div>
+                            </div>
+                        <div class="jrtxl" :if="el.status == 1" :click="@ztsztj('0',el.contacts_id)">已加入通讯录(未关注)</div>
+                        <div class="jrtxl" :if="el.status == 2" :click="@ztsztj('0',el.contacts_id)">已关注微信企业号</div>
+                        <div class="backeee jrtxl" :if="el.status == 0" :click="@ztsztj('1',el.contacts_id,el.name,el.telephone,el.position)">未加入通讯录</div>
+                        <div class="scxg pointer_all">
+                            <span class=" padding_4"  data-toggle="modal" data-target="#changeRy" :click="@xglxr(el.telephone,el.name,el.position,el.contact_type,el.contacts_id,el.crop_id,el.status,@datalist.djxh,el.enterprise_contacts_id)"><i class="iconfont icon-modify"></i>修改</span>
+                            <span class=" padding_4" :click="@deletelxr(el.crop_id,el.contacts_id,el.enterprise_contacts_id)"><i class="iconfont icon-shanchu"></i>删除</span>
+                        </div>
+                        <div class="jrtxlgx" :if="el.status == 1"><i style="color: #7FC218" class="iconfont icon-gouxuan"></i></div>
+                    </li>
+                    <li :click="@xzrytwo(@datalist.djxh)">
+                        <div class="thumbnail over_hidden" style="padding: 15px;">
+                            <a href="#"   data-toggle="modal" data-target="#addRy" id="webchatAnd" :click="@qrtjry('webchatAnd')">
+                                <div class="text-center pull-left jiahao">
+                                    <i class="iconfont icon-xinjian color_blue" ></i>
+                                </div>
+                                <span style="margin-left:15px;line-height: 36px;">新增人员</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            </div>
+        <button class="pull-left btn btn-default btn-sm" style="margin-bottom:10px;" id="addBtn"  :click="@dhtjtxl">单户添加通讯录</button>
+        <!--<div class="pull-left" style="display:inline-block;margin-bottom:10px;margin-left:10px;" id="exportBtn" data-toggle="tooltip"  title="上传之前请下载右侧模板">-->
+            <!--<input type="file" name="file" lay-type="file"  id="filewj" style=""/></div>-->
+        <!--<button class="pull-left btn btn-default btn-sm" style="margin-bottom:10px;margin-left:10px;" id="xzBtn" :click="xzmb_fun">下载批量导入模板</button>-->
+        <!--<button class="pull-left btn btn-default btn-sm" style="margin-bottom:10px;margin-left:10px;" id="expBtn">通讯录导出</button>-->
+        <button class="pull-left btn btn-default btn-sm" style="margin-bottom:10px;margin-left:10px;" id="setBtn" data-toggle="modal" data-target="#setfl" :click="@szflcxssbm">设置所在分类</button>
+        <button class="pull-left btn btn-default btn-sm" style="margin-bottom:10px;margin-left:10px;" id="delBtn" :click="@deleteqy(@delettdjxh)">删除</button>
+        <table class="table table-responsive " style="width:100%; z-index:2; margin:0;">
+            <thead class=" table-bordered table-responsive table-striped text-center" style="background-color:#F6F7FB;">
+            <tr>
+                <td class=" table-bordered" id="cxssdjxh"><input class="chooseAll" type="checkbox" :click="@checkedAll"></td>
+                <td class=" table-bordered">企业名称</td>
+                <td class=" table-bordered">纳税人识别号</td>
+                <td class=" table-bordered">行业</td>
+                <td class=" table-bordered">登记注册类型</td>
+                <!--<td class=" table-bordered">是否一般纳税人</td>-->
+            </tr>
+            </thead>
+            <tbody class="table table-bordered table-responsive" id="glylist">
+            <tr id="inxq" :for="(index,el) in @listse">
+                <td  class="text-center" style="margin-top:15px;"><input  type="checkbox" :duplex="@delettdjxh" :attr="{value:el.enterprise.djxh}" :click="@checkOne"/></td>
+                <td :attr="{title:el.enterprise.nsrmc}" class="cursor":click="@ckxq(el.enterprise,el.contacts,index)">{{el.enterprise.nsrmc | truncate(12,'...')}}</td>
+                <td :attr="{title:el.enterprise.nsrsbh}" class="">{{el.enterprise.nsrsbh }}</td>
+                <td :attr="{title:el.enterprise.hymc}" class="">{{el.enterprise.hymc | truncate(12,'...')}}</td>
+                <td :attr="{title:el.enterprise.djzclxmc}" class="" style="border-right: 1px solid #eee">{{el.enterprise.djzclxmc | truncate(12,'...')}}</td>
+                <!--<td class="" :visible="el.enterprise.ybnsr == 'Y'">是</td>-->
+                <!--<td class="" :visible="el.enterprise.ybnsr == 'N'">否</td>-->
+
+                <!--<td class="" >{{el.enterprise.ybnsr}}</td>-->
+            </tr>
+            </tbody>
+            <tfoot class="margin_top">
+            <tr>
+                <td colspan="7">
+                    <div class="text-center" id="txlpafe"></div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- 按户添加通讯录 -->
+    <div  id="addtxl" :class="[@ahtj && 'hidden']" style="background: #fff">
+        <div class="btn-group btn-group-xs" style="margin-top:15px;margin-left:16%;margin-bottom:10px;">
+            <button type="button" class="btn btn-default" style="width:50px;"  :click="@dhtjtxl"><i class="iconfont icon-shiliangzhinengduixiang4"></i>返回</button>
+        </div>
+        <div style="background-color:#F9F8FE;height:600px;width:83%;margin-left:16%;padding: 30px;">
+            <label  style="font-weight: normal;margin-right: 10px;">纳税人识别号:</label>
+            <input style="padding: 5px;width: 40%;border: 1px solid #E8EBF0" type="text" placeholder="请输入纳税人识别号/社会信用代码" :duplex="@nsrsbhXyh"/>
+            <button data-toggle="modal" id="modeladd"  class="margin_left15 btn btn-info btn-sm" :click="@nsrsbhfunction">确认</button>
+        </div>
+    </div>
+
+    <!-- Modal添加通讯录 -->
+    <div class="modal fade" id="addnsr_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document"  style="width:60%;">
+            <div class="modal-content">
+                <div class="modal-header" style="border: 0;padding-bottom: 0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" >
+                    <h6 style="color:#aaa; margin-left: 68px;">该纳税人识别号/社会信用代码有多条登记记录，请选择一条登记记录</h6>
+                    <div class="clearfix" :for="el in @tjtxlnasr">
+                        <!--<div style="display: inline-block;width:20px;height: 20px;border-radius: 50%;border: 1px solid #DCDCDC;margin-top: 48px;margin-left: 25px;" :class="[@choosetoggle  && 'backblue']" :click="@chooseToggle(el.nsrsbh,el.nsrmc,)">-->
+                            <!--<i style="color: #fff" class="iconfont icon-gou"></i>-->
+                        <!--</div>-->
+                        <div  style="position:relative;display: inline-block;width:20px;height: 20px;border-radius: 50%;margin-top: 48px;margin-left: 25px;" :click="@chooseToggle(el.enterprise.nsrsbh,el.enterprise.nsrmc,el.enterprise.djxh)">
+                            <input type="radio" name="cktj" :visible="el.deparment.status == '0'"/>
+                            <span style="font-size: 10px;position: absolute;top:-18px;"  :visible="el.deparment.status == '1'">已添加</span>
+                        </div>
+                        <table class="table pull-right" style="border:1px solid #DCDCDC;width:90%;margin-right:9px;">
+                            <tr style="border:1px solid #DCDCDC;">
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">纳税人名称</td>
+                                <td :attr="{title:el.enterprise.nsrmc}" class="text-left ">{{el.enterprise.nsrmc | truncate(16,'...')}}</td>
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">登记序号</td>
+                                <td :attr="{title:el.enterprise.djxh}" class="text-left ">{{el.enterprise.djxh | truncate(16,'...')}}</td>
+                            </tr>
+                            <tr style="border:1px solid #DCDCDC;">
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">纳税人识别号</td>
+                                <td :attr="{title:el.enterprise.nsrsbh}" class="text-left  ">{{el.enterprise.nsrsbh | truncate(16,'...')}}</td>
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">社会信用代码</td>
+                                <td :attr="{title:el.enterprise.shxydm}" class="text-left  ">{{el.enterprise.shxydm | truncate(16,'...')}}</td>
+                            </tr>
+                            <tr style="border:1px solid #DCDCDC;">
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">主管税务科所分局</td>
+                                <td :attr="{title:el.enterprise.zgswskfj_dm}" class="text-left  ">{{el.enterprise.zgswskfj_dm | truncate(16,'...')}}</td>
+                                <td class="text-right " style="background-color:#F8F8F8;border:1px solid #DCDCDC;">纳税人状态</td>
+                                <td class="text-left  " :if="el.enterprise.ybnsr == 'Y'">是</td>
+                                <td class="text-left  " :if="el.enterprise.ybnsr == 'N'">否</td>
+                            </tr>
+                        </table>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" id="inaddTxl"  :click="@txlqr">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- 添加通讯录 -->
+    <div  :class="[@ahtjtjry && 'hidden']" id="dgtxl" style="background: #fff">
+        <div class="btn-group btn-group-xs" style="margin-top:15px;margin-left:185px;margin-bottom:10px;">
+            <button type="button" class="btn btn-default" style="width:50px;"  :click="@tjtxlback">返回</button><br>
+        </div>
+        <div style="background-color:#F9F8FE;height:600px;width:83%;margin-left:16%;padding: 5px;">
+            <div style="margin-bottom: 20px;">
+                <label class="text-right" style="font-weight: normal;width: 16%;margin-right: 20px;">纳税人识别号 :</label>
+                <input type="text"  style="width:35%;padding: 5px;border: 1px solid #EBEDEF"  readonly :attr='{value:@nsrsbh}' >
+            </div>
+            <div >
+                <label class="text-right" style="font-weight: normal;width: 16%;margin-right: 20px;">纳税人名称 :</label>
+                <input type="text"  style="width:35%;padding: 5px;border: 1px solid #EBEDEF" readonly  :attr='{value:@nsrmc}'>
+            </div>
+            <div  >
+                <ul style="display:inline-block;margin-top:20px;width:100%;height:70px;margin-left: 15px" :for="el in @tjtxlnasr">
+                    <li class="pull-left" style="position: relative;width: 47%; margin-right: 20px;":hover="@bkxsc" :for="children in el.contacts">
+                        <div class="thumbnail over_hidden" >
+                            <img class=" pull-left" src="../../static/images/lxrheader.png">
+                            <div class="caption pull-left cap_text"  >
+                                <p style="margin-bottom: -1px;">{{children.name}}({{children.position}})</p>
+                                <p class="color_aaa"><i class="iconfont icon-dianhua"  style="padding-right: 8px;font-size: 8px;"></i> <span >电话：{{children.telephone}}</span></p>
+                            </div>
+                        </div>
+                        <div class="jrtxl backeee" :if="children.status == 0" :click="@qrxglxr('1',children.contacts_id)">未加入通讯录</div>
+                        <div class="jrtxl" :if="children.status == 1" :click="@qrxglxr('0',children.contacts_id)">已加入通讯录</div>
+                        <div class="scxg pointer_all">
+                            <span class=" padding_4"  data-toggle="modal" data-target="#changeRyqr" :click="@xglxrsure(children)"><i class="iconfont icon-modify"></i>修改</span>
+                            <span class=" padding_4"><i class="iconfont icon-shanchu" :click="@sureDelete(children)"></i>删除</span>
+                        </div>
+                        <div class="jrtxlgx" :if="el.status == 1"><i style="color: #7FC218;position: absolute;bottom: 5px;right: 1px" class="iconfont icon-gouxuan"></i></div>
+                    </li>
+                    <li class="pull-left" style="position: relative;width: 47%; margin-right: 20px;">
+                        <div class="thumbnail over_hidden" style="padding: 15px;" >
+                            <a href="javascript:;"   data-toggle="modal" data-target="#addRy" id="qrtjry" :click="@qrtjry('qrtjry')">
+                                <div class="text-center pull-left jiahao">
+                                    <i class="iconfont icon-xinjian color_blue" ></i>
+                                </div>
+                                <span style="margin-left:15px;line-height: 36px;">新增人员</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-center " style="margin-top: 120px;">
+                <button class="btn btn-info" :click="@sureadd">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改人员 -->
+    <div class="modal fade" id="changeRy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">修改人员</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">姓名</td>
+                            <td class="text-left last_td"><input class="last_text"  type="text"  :duplex="@xgName" id="xgName"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">职务</td>
+                            <td class="text-left last_td ">
+                                <!--<input class="last_text" type="text"  :duplex="@xgzw" id="xgzw"/>-->
+                                <select style="width: 95%;height: 35px;" :duplex="@xgzw" id="xgzw">
+                                    <option>&#45;&#45;请选择所属职务&#45;&#45;</option>
+                                    <option>法定代表人</option>
+                                    <option>财务负责人</option>
+                                    <option>办税人员</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">电话</td>
+                            <td class="text-left last_td "><input class="last_text" type="text"  :duplex="@xgphone" id="xgphone" readonly/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info"  :click="@sureChange">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- 确认添加中的修改人员 -->
+        <div class="modal fade" id="changeRyqr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title">修改人员</h5>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <td class="text-right first_td">姓名</td>
+                                <td class="text-left last_td"><input class="last_text"  type="text"  :duplex="@xgName" id="changeRyqr_xgName"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right first_td">职务</td>
+                                <td class="text-left last_td ">
+                                   <!-- <input class="last_text" type="text"  :duplex="@xgzw" id="changeRyqr_xgzw"/>-->
+                                    <select style="width: 95%;height: 35px;" :duplex="@xgzw" id="changeRyqr_xgzw">
+                                        <option>&#45;&#45;请选择所属职务&#45;&#45;</option>
+                                        <option>法定代表人</option>
+                                        <option>财务负责人</option>
+                                        <option>办税人员</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right first_td">电话</td>
+                                <td class="text-left last_td "><input class="last_text" type="text"  :duplex="@xgphone" id="changeRyqr_xgphone"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-info"  :click="@sureChangeqy">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 新增人员 -->
+    <div class="modal fade"  tabindex="-1" id="addRy" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">添加人员</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">姓名</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" placeholder="请输入姓名" :duplex="@name" id="add_name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">职务</td>
+                            <td class="text-left last_td ">
+                                <!--<input class="last_text" type="text" placeholder="请输入所属职务" :duplex="@zw" id="add_zw"/>-->
+                                <select style="width: 95%;height: 35px;" :duplex="@zw" id="add_zw">
+                                    <option>&#45;&#45;请选择所属职务&#45;&#45;</option>
+                                    <option>法定代表人</option>
+                                    <option>财务负责人</option>
+                                    <option>办税人员</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td">电话</td>
+                            <td class="text-left last_td "><input class="last_text" type="text" placeholder="请输入电话号码" :duplex="@phone" id="add_phone"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" id="qryjrysure"  :click="@tjry">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal增加子分类 -->
+    <div class="modal fade" id="addChi_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">增加子分类</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>分类名称</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" placeholder="请输入分类名称"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right first_td"><i class="iconfont icon-xinghao color_red"></i>所属分类</td>
+                            <td class="text-left last_td "><input class="last_text" type="text" placeholder="选择所属分类"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info">确认修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal新建分类 -->
+    <div class="modal fade" id="newFl_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">新建分类</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">分类名称</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" placeholder="请输入分类名称" :duplex="@flmc" id="add_flmc"/></td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td class="text-right first_td">所属分类</td>-->
+                            <!--<td class="text-left last_td">-->
+                                <!--<select style="padding: 5px;width: 95%"></select>-->
+                                    <!--<ul :for="el in @listone" class="hidden">-->
+                                        <!--<li href="#bj" ms-attr="{href:'#'+ el.group_name}" class=" nav-header menu-first collapsed" data-toggle="collapse">-->
+                                            <!--<p style="text-align:left;cursor:pointer;margin-left:15px;"><i class="pull-left iconfont icon-jiantouxiangyou"></i> {{el.group_name}} </p>-->
+                                        <!--</li>-->
+                                        <!--<ul ms-attr="{id: el.group_name}" class=" nav nav-list collapse menu-second">-->
+                                            <!--<li class="children" :hover="@disCss"  :for="children in el.list">{{children.group_name}} <i class="color_f iconfont icon-fengexianICONCopy"></i>-->
+                                                <!--<div > <ul>-->
+                                                    <!--<li data-toggle="modal" data-target="#changezfl">添加子分类</li>-->
+                                                    <!--<li data-toggle="modal" data-target="#changeName">修改名称</li>-->
+                                                    <!--<li data-toggle="modal" data-target="#deletefl">删除</li>-->
+                                                <!--</ul></div>-->
+                                            <!--</li>-->
+                                        <!--</ul>-->
+                                    <!--</ul>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" id="xjfljhad"  :click="@xjfl">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal新建分类 -->
+    <div class="modal fade" id="changezfl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">添加子分类</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">分类名称</td>
+                            <td class="text-left last_td"><input class="last_text" type="text"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal修改名称 -->
+    <div class="modal fade" id="changeName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="z-index: 1000">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">修改名称</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right first_td">分类名称</td>
+                            <td class="text-left last_td"><input class="last_text" type="text" :duplex="@groupname" id="groupname"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" id="xgflmcqr"  :click="@xgflmc">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal删除分类 -->
+    <!--<div class="modal fade" id="deletefl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">删除分类</h5>
+                </div>
+                <div class="modal-body text-center" style="margin: 20px;">
+                        确定删除重点税源分类？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- Modal设置所在分类 -->
+    <div class="modal fade" id="setfl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 5px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">设置所在分类</h5>
+                </div>
+                <div class="modal-body text-center" style="margin:3px;height:300px;position: relative">
+                    <div class="pull-left" style="border-right:1px solid #eee;width:50%;">
+                        <i class="iconfont icon-sousuo-sousuo" style="color: #aaa;position: absolute;left:20px;top:20px;"></i>
+                        <input type="text" style="padding:3px;padding-left:30px;border:1px solid #eee;margin-bottom:10px;margin-right:140px;width:85%;" placeholder="搜索分类"/>
+                        <div class="text-left" style="  padding: 10px;padding-left: 0; overflow: auto;">
+                            <ul  class="layui-box layui-tree">
+                                <li :for="el in @listone" :click="@xztree(el.group_name,el.group_id)"><a href="javascript:;"><i class="layui-icon layui-tree-leaf blue"></i><cite>{{el.group_name}}</cite></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class=" pull-right" >
+                        <span style="margin-bottom:14px;margin-right:120px;width:85%;color:#aaa;">企业将属于以下部门</span>
+                        <ul style="margin-top:5px;text-align:left;">
+                            <li :for="(index,el) in @treelist_fz">
+                                <span style="margin-left:5px;"><i class="iconfont icon-tab4wenjianzhongxin color_blue margin_right8"></i> {{el.group_name}}</span><button type="button" class="close" :click="@deletexz(el.group_name,el.group_id,index)"><span>&times;</span></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" id="szflsure" :click="@szfl">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
